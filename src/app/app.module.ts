@@ -14,13 +14,19 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { FlightService } from './service/flight/flight.service';
 import { HttpClientModule } from "@angular/common/http";
+import {MatDialogModule} from '@angular/material/dialog';
+import { BookingDialogComponent } from './booking-dialog/booking-dialog.component'; 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     FlightsComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    BookingDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +37,11 @@ import { HttpClientModule } from "@angular/common/http";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [
     FlightService
