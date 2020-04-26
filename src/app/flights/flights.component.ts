@@ -36,15 +36,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   }
 
   openDialog(row): void {
-    // let booking: Booking = {
-    //   flight: row.flightId,
-    //   patron: "",
-    //   bookingAgent: "",
-    //   bookingId: 0,
-    //   numberOfTickets: 0,
-    //   ticketPrice: 0
-    // };
-    let booking: Booking = {flight: row.flightId, ticketPrice: row.price}
+    let booking: Booking = {flight: row.flightId, ticketPrice: row.price, bookingId: 0}
     const dialogRef = this.dialog.open(BookingDialogComponent, {
       data: {...booking}
     });

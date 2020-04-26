@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Booking } from '../domain/booking'
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-dialog',
@@ -15,6 +16,10 @@ export class BookingDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+  }
+
+  isValid(patron: NgModel, numberOfTickets: NgModel, bookingAgent: NgModel) {
+    return patron.valid && numberOfTickets.valid && bookingAgent.valid;
   }
 
   onCancel(): void {
