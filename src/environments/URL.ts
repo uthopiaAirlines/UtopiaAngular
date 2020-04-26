@@ -1,3 +1,3 @@
 export const url = {
-    counter: 'http://localhost:8080/v2/counter'
+    counter: 'http://localhost:8080/resource-server/v2/counter'
 }

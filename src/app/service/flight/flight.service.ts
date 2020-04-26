@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { Flight } from '../../domain/flight'
 import { environment } from '../../../environments/environment'
 import { Booking } from 'src/app/domain/booking';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 const url = environment.urls.counter;
 
@@ -11,13 +12,14 @@ const url = environment.urls.counter;
 })
 export class FlightService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private oauthService: OAuthService) { }
 
   getFlights() {
     return this.http.get<Flight[]>(url + '/flights')
   }
 
   createBooking(booking: Booking) {
-    return this.http.post<Booking>(url + '/bookings', booking);
+    const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.post<Booking>(url + '/bookings', booking, {headers: headers});
   }
 }

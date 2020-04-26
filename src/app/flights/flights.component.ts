@@ -44,15 +44,17 @@ export class FlightsComponent implements AfterViewInit, OnInit {
     //   numberOfTickets: 0,
     //   ticketPrice: 0
     // };
-    let booking: Booking = {flight: row.flightId}
+    let booking: Booking = {flight: row.flightId, ticketPrice: row.price}
     const dialogRef = this.dialog.open(BookingDialogComponent, {
       data: {...booking}
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      this.flightService.createBooking(res).subscribe(() => {
-        this.table.renderRows();
-      })
+      if (res) {
+        this.flightService.createBooking(res).subscribe(() => {
+          this.table.renderRows();
+        })
+      }
     })
   }
 }
