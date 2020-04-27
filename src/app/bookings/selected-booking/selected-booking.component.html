@@ -1,0 +1,26 @@
+<div>
+    <h1>Booking Details</h1>
+    <div>
+        <p>Airline: {{booking.flight.airline.name}}</p>
+        <p>Ticket Price: ${{booking.ticketPrice}}</p>
+        <p>Number Of Ticket: {{booking.numberOfTickets}}</p>
+        <p>Booking Agent: {{booking.bookingAgent}}</p>
+    </div>
+    <div class="flightRow">
+        <div class="flightColumn">
+            <h3>Departure:</h3>
+            <p> -Time: {{booking.flight.departureTime}}</p>
+            <p> -Airport Name: {{booking.flight.departureLocation.name}}</p>
+            <p> -Airport Code: {{booking.flight.departureLocation.airportCode}}</p>
+            <p> -Airport Address: {{booking.flight.departureLocation.address}}</p>
+        </div>
+        <div class="flightColumn">
+            <h3>Arrival:</h3>
+            <p> -Time: {{booking.flight.arrivalTime}}</p>
+            <p> -Airport Name: {{booking.flight.arrivalLocation.name}}</p>
+            <p> -Airport Code: {{booking.flight.arrivalLocation.airportCode}}</p>
+            <p> -Airport Address: {{booking.flight.arrivalLocation.address}}</p>
+        </div>
+    </div>
+    <div><button mat-button (click)="onClick()">Cancel Booking</button></div>
+</div>

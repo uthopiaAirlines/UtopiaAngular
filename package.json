@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~9.0.3",
     "@angular/platform-browser-dynamic": "~9.0.3",
     "@angular/router": "~9.0.3",
+    "angular-webstorage-service": "^1.0.2",
     "@ng-bootstrap/ng-bootstrap": "^4.2.2",
     "angular-oauth2-oidc": "^9.2.1",
     "bootstrap": "^4.4.1",
