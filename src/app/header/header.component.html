@@ -1,6 +1,7 @@
 <mat-toolbar color="primary">
     <a mat-button [routerLink]="['home']">Home</a>
     <a mat-button [routerLink]="['flights']">Flights</a>
+    <a mat-button [routerLink]="['bookings']">Bookings</a>
     <div *ngIf="loggedIn">
         <button (click)="logout()">Logout</button>
     </div>
