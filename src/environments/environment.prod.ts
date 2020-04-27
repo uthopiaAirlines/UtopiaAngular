@@ -1,3 +1,6 @@
+import { url } from './URL'
+
 export const environment = {
-  production: true
+  production: true,
+  urls: url
 };
