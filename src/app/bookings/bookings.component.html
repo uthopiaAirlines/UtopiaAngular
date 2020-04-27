@@ -1,0 +1,48 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="airline">
+      <th mat-header-cell *matHeaderCellDef> Airline </th>
+      <td mat-cell *matCellDef="let element"> {{element.flight.airline.name}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="departureLocation">
+      <th mat-header-cell *matHeaderCellDef> Depature Location </th>
+      <td mat-cell *matCellDef="let element"> {{element.flight.departureLocation.airportCode}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="departureTime">
+      <th mat-header-cell *matHeaderCellDef> Departure Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.flight.departureTime}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="arrivalLocation">
+      <th mat-header-cell *matHeaderCellDef> Arrival Location </th>
+      <td mat-cell *matCellDef="let element"> {{element.flight.arrivalLocation.airportCode}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="arrivalTime">
+      <th mat-header-cell *matHeaderCellDef> Arrival Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.flight.arrivalTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let element"> ${{element.ticketPrice}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="numberOfTickets">
+      <th mat-header-cell *matHeaderCellDef> # </th>
+      <td mat-cell *matCellDef="let element"> {{element.numberOfTickets}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
+</div>

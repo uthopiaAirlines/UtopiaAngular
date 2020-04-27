@@ -1,0 +1,11 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+.flightRow {
+    display: flex;
+  }
+
+.flightColumn {
+  border-style: outset;
+    flex: 50%;
+    padding: 10px;
+  }
