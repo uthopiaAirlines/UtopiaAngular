@@ -2,11 +2,11 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { FlightsDataSource} from './flights-datasource';
+import { FlightsDataSource } from './flights-datasource';
 import { Flight } from '../domain/flight'
 import { Booking } from '../domain/booking'
 import { FlightService } from '../service/flight/flight.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BookingDialogComponent } from '../booking-dialog/booking-dialog.component'
 
 @Component({
@@ -23,7 +23,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['flightId', 'airline', 'arrivalTime', 'arrivalLocation', 'departureTime', 'departureLocation', 'availableSeats', 'price'];
 
-  constructor(private flightService: FlightService, public dialog: MatDialog) {}
+  constructor(private flightService: FlightService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.dataSource = new FlightsDataSource(this.flightService);
@@ -41,9 +41,9 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   }
 
   openDialog(row): void {
-    let booking: Booking = {flight: row.flightId, ticketPrice: row.price, bookingId: 0}
+    let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0 }
     const dialogRef = this.dialog.open(BookingDialogComponent, {
-      data: {...booking}
+      data: { ...booking }
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -54,4 +54,9 @@ export class FlightsComponent implements AfterViewInit, OnInit {
       }
     })
   }
+
+  dateFormated(date) {
+    return new Date(date);
+  }
+
 }
