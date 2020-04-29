@@ -26,6 +26,10 @@ export class SelectedBookingComponent implements OnInit {
     this.dialog.open(DeletionConfirmation);
   }
 
+  dateFormated(date) {
+    return new Date(date);
+  }
+
 }
 
 @Component({

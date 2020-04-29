@@ -84,4 +84,8 @@ export class BookingsComponent implements OnInit {
     this._router.navigateByUrl('selectedBooking')
   }
 
+  dateFormated(date) {
+    return new Date(date);
+  }
+
 }
