@@ -63,19 +63,17 @@ export class BookingsComponent implements OnInit {
 
   getBookingsOfClient(clientId) {
     this.bookingServ.getClientsBookings(clientId).subscribe(res => {
-      this.dataSource = res;
+      this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
     })
   }
 
   //For Customers
   getBookingsBySub(sub) {
-    if (this.userRole == "Customer") {
-      this.bookingServ.getBookingsByUserCustomer(sub).subscribe(flights => {
-        this.dataSource = new MatTableDataSource(flights);
-        this.dataSource.paginator = this.paginator;
-      });
-    }
+    this.bookingServ.getBookingsByUserCustomer(sub).subscribe(flights => {
+      this.dataSource = new MatTableDataSource(flights);
+      this.dataSource.paginator = this.paginator;
+    });
   };
 
   //For Everyone
