@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
 import { claims } from '../domain/oauthTokenClaims';
-import { BookingService } from '../services/booking-service.service';
+import { BookingService } from '../service/booking/booking-service.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BookingService } from '../../services/booking-service.service';
+import { BookingService } from '../../service/booking/booking-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
