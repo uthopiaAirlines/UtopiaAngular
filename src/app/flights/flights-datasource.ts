@@ -55,7 +55,6 @@ export class FlightsDataSource extends DataSource<Flight> {
       //   this.dataLength = this.dataArray.length;
       // }, error => {console.log(error)})
       return this.getPagedData(this.getSortedData([...this.dataArray.filter((flight) => {
-        console.log(flight);
         return (flight.airline.toString().includes(this.filterString) ||
                 flight.arrivalLocation.name.includes(this.filterString) ||
                 flight.arrivalTime.toLocaleString().includes(this.filterString) ||
@@ -99,7 +98,6 @@ export class FlightsDataSource extends DataSource<Flight> {
       return data;
     }
 
-    console.log("sort");
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
@@ -119,6 +117,5 @@ export class FlightsDataSource extends DataSource<Flight> {
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
 function compare(a: string | number, b: string | number, isAsc: boolean) {
-  console.log(a + " : " + b);
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
