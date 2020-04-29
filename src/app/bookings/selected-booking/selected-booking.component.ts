@@ -27,7 +27,7 @@ export class SelectedBookingComponent implements OnInit {
   }
 
   dateFormated(date) {
-    return new Date(date);
+    return new Date(date).toLocaleString();
   }
 
 }

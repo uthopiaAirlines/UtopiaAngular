@@ -83,7 +83,7 @@ export class BookingsComponent implements OnInit {
   }
 
   dateFormated(date) {
-    return new Date(date);
+    return new Date(date).toLocaleString();
   }
 
 }
