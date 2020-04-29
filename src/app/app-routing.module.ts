@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { HomeComponent } from './home/home.component';
 import { FlightsComponent } from './flights/flights.component';
-
-
 import { BookingsComponent } from './bookings/bookings.component';
-import { SelectedBookingComponent } from './bookings/selected-booking/selected-booking.component'
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SelectedBookingComponent } from './bookings/selected-booking/selected-booking.component';
+
+import { AuthGuardService } from './service/authGuard/auth-guard.service'
+
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "home" },
@@ -14,11 +17,17 @@ const routes: Routes = [
   {
     path: 'bookings',
     component: BookingsComponent,
-    children: []
+    children: [],
+    canActivate: [AuthGuardService]
   },
   {
     path: 'selectedBooking',
-    component: SelectedBookingComponent
+    component: SelectedBookingComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

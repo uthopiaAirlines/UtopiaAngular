@@ -1,4 +1,13 @@
 <div class="mat-elevation-z8">
+
+  <mat-form-field *ngIf="userRole == 'Agent'">
+    <mat-label>Select a Client</mat-label>
+    <mat-select [(value)]="selectedClient" (selectionChange)="getBookingsOfClient($event.value.client)">
+      <mat-option *ngFor="let client of clients;" [value]="client">{{client.client}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
   <table mat-table [dataSource]="dataSource">
 
     <!-- Position Column -->
@@ -16,7 +25,7 @@
     <!-- Weight Column -->
     <ng-container matColumnDef="departureTime">
       <th mat-header-cell *matHeaderCellDef> Departure Time </th>
-      <td mat-cell *matCellDef="let element"> {{element.flight.departureTime}} </td>
+      <td mat-cell *matCellDef="let element"> {{dateFormated(element.flight.departureTime)}} </td>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -27,7 +36,7 @@
 
     <ng-container matColumnDef="arrivalTime">
       <th mat-header-cell *matHeaderCellDef> Arrival Time </th>
-      <td mat-cell *matCellDef="let element"> {{element.flight.arrivalTime}} </td>
+      <td mat-cell *matCellDef="let element"> {{dateFormated(element.flight.arrivalTime)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="price">
@@ -40,9 +49,14 @@
       <td mat-cell *matCellDef="let element"> {{element.numberOfTickets}} </td>
     </ng-container>
 
+
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
   </table>
 
+  <div *ngIf="loading" class="loadingCircle">
+    <mat-progress-spinner mode="'indeterminate'"></mat-progress-spinner>
+  </div>
   <mat-paginator [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons></mat-paginator>
 </div>

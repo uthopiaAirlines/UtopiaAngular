@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OAuthService, AuthConfig } from 'angular-oauth2-oidc'
+import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
 
 export const authconfig: AuthConfig = {
   issuer: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iPhgdkopW',
@@ -18,11 +19,11 @@ export const authconfig: AuthConfig = {
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService, private _router: Router) {
     this.oauthService.configure(authconfig);
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.oauthService.strictDiscoveryDocumentValidation = false;
-   }
+  }
 
   ngOnInit(): void {
   }
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.oauthService.logOut();
+    this._router.navigateByUrl('home');
   }
 
   get loggedIn() {
