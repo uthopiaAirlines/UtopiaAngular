@@ -16,6 +16,7 @@ import { MatSliderModule } from '@angular/material/slider';
 
 
 import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { SelectedBookingComponent, DeletionConfirmation } from './bookings/selected-booking/selected-booking.component';
 
@@ -34,6 +35,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { from } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     FlightsComponent,
     HomeComponent,
     HeaderComponent,
-    BookingDialogComponent
+    BookingDialogComponent,
+    PageNotFoundComponent
   ],
   entryComponents: [DeletionConfirmation, BookingDialogComponent],
   imports: [
