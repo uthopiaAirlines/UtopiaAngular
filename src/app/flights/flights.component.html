@@ -49,15 +49,10 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-      (click)="openDialog(row)"
-    ></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(row)"></tr>
   </table>
 
-  <mat-paginator #paginator
-      [length]="dataSource?.dataLength"
-      [pageIndex]="0"
-      [pageSize]="50"
-      [pageSizeOptions]="[25, 50, 100, 250]">
+  <mat-paginator #paginator [length]="dataSource?.dataLength" [pageIndex]="0" [pageSize]="50"
+    [pageSizeOptions]="[25, 50, 100, 250]">
   </mat-paginator>
 </div>

@@ -8,12 +8,19 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { StorageServiceModule } from 'angular-webstorage-service';
 import { MatDialogModule } from '@angular/material/dialog'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
+
 
 import { AppComponent } from './app.component';
 import { BookingsComponent } from './bookings/bookings.component';
 import { SelectedBookingComponent, DeletionConfirmation } from './bookings/selected-booking/selected-booking.component';
 
 import { BookingService } from './services/booking-service.service';
+import { AuthGuardService } from './service/authGuard/auth-guard.service'
 
 import { FlightsComponent } from './flights/flights.component';
 import { HomeComponent } from './home/home.component';
@@ -42,6 +49,9 @@ import { OAuthModule } from 'angular-oauth2-oidc';
   entryComponents: [DeletionConfirmation, BookingDialogComponent],
   imports: [
     BrowserModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
     AppRoutingModule,
     MatTableModule,
     MatPaginatorModule,
@@ -60,12 +70,15 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     MatDialogModule,
     MatFormFieldModule,
     FormsModule,
+    MatProgressSpinnerModule,
     MatInputModule,
+    MatProgressBarModule,
     OAuthModule.forRoot()
   ],
   providers: [
     FlightService,
-    BookingService
+    BookingService,
+    AuthGuardService
   ],
   bootstrap: [AppComponent]
 })
