@@ -2,6 +2,7 @@
     <a mat-button [routerLink]="['home']">Home</a>
     <a mat-button [routerLink]="['flights']">Flights</a>
     <a mat-button [routerLink]="['bookings']" *ngIf="loggedIn">Bookings</a>
+    <a mat-button [routerLink]="['agentregistration']" *ngIf="isCustomer()">Agent Registration</a>
     <div *ngIf="loggedIn">
         <button (click)="logout()">Logout</button>
     </div>

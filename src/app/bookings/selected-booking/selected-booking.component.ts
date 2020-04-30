@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { claims } from '../../domain/oauthTokenClaims';
+import { ErrorDialogComponent } from '../../error-dialog/error-dialog.component';
 
 
 
@@ -34,7 +35,7 @@ export class SelectedBookingComponent implements OnInit {
 
 @Component({
   selector: 'deletion-confirmation',
-  templateUrl: 'deletion-confirmation.html'
+  templateUrl: './deletion-confirmation.html'
 })
 export class DeletionConfirmation implements OnInit {
   constructor(private bookingServ: BookingService, private router: Router, private dialog: MatDialog, private oauthService: OAuthService) { }
@@ -52,14 +53,30 @@ export class DeletionConfirmation implements OnInit {
       this.bookingServ.deleteBookingCustomer(booking).subscribe(result => {
         this.router.navigateByUrl('/bookings');
         this.dialog.closeAll();
-      });
-    };
+      },
+        err => {
+          this.dialog.open(ErrorDialogComponent);
+        });
+    }
 
-    if (this.userRole == "Agent") {
+    else if (this.userRole == "Agent") {
       this.bookingServ.deleteBookingClient(booking).subscribe(result => {
         this.router.navigateByUrl('/bookings');
         this.dialog.closeAll();
-      });
+      },
+        err => {
+          this.dialog.open(ErrorDialogComponent);
+        });
+    }
+
+    else if (this.userRole == "Counter") {
+      this.bookingServ.deleteBookingCounter(booking).subscribe(result => {
+        this.router.navigateByUrl('/bookings');
+        this.dialog.closeAll();
+      }),
+        err => {
+          this.dialog.open(ErrorDialogComponent);
+        }
     };
 
   }

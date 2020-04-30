@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import { CustomerAuthService } from '../service/authGuard/customer-auth.service';
+import { claims } from '../domain/oauthTokenClaims';
 
 export const authconfig: AuthConfig = {
   issuer: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iPhgdkopW',
@@ -39,6 +41,16 @@ export class HeaderComponent implements OnInit {
 
   get loggedIn() {
     return this.oauthService.hasValidAccessToken();
+  }
+
+  isCustomer() {
+    if (this.oauthService.hasValidAccessToken()) {
+      let user: claims = this.oauthService.getIdentityClaims();
+      if (user["cognito:groups"][0] == "Customer") {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
