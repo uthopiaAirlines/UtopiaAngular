@@ -2,8 +2,8 @@
 
   <mat-form-field *ngIf="userRole == 'Agent'">
     <mat-label>Select a Client</mat-label>
-    <mat-select [(value)]="selectedClient" (selectionChange)="getBookingsOfClient($event.value.client)">
-      <mat-option *ngFor="let client of clients;" [value]="client">{{client.client}}</mat-option>
+    <mat-select [(value)]="selectedClient" (selectionChange)="getBookingsOfClient($event.value.sub)">
+      <mat-option *ngFor="let client of clients;" [value]="client">{{client.username}}</mat-option>
     </mat-select>
   </mat-form-field>
 
