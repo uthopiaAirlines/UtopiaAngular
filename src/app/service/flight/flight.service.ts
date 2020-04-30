@@ -6,7 +6,7 @@ import { Booking } from 'src/app/domain/booking';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map } from 'rxjs/operators';
 
-const url = environment.urls.counter;
+const url = environment.urls;
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class FlightService {
   constructor(private http: HttpClient, private oauthService: OAuthService) { }
 
   getFlights() {
-    return this.http.get<Flight[]>(url + '/flights').pipe(map((data) => {
+    return this.http.get<Flight[]>(url.counter + '/flights').pipe(map((data) => {
       data.forEach((flight) => {
         flight.arrivalTime = new Date(flight.arrivalTime);
         flight.departureTime = new Date(flight.departureTime);
@@ -26,7 +26,23 @@ export class FlightService {
   }
 
   createBooking(booking: Booking) {
+    booking.bookingAgent = this.oauthService.getIdentityClaims()["sub"];
+    console.log(booking);
+    let currentUrl: string;
+    switch (this.oauthService.getIdentityClaims()["cognito:groups"][0]) {
+      case "Agent":
+        currentUrl = url.agent;
+        break;
+      case "Counter":
+        currentUrl = url.counter;
+        break;
+      case "Customer":
+        currentUrl = url.customer;
+        break;
+      default:
+        break;
+    }
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.post<Booking>(url + '/bookings', booking, {headers: headers});
+    return this.http.post<Booking>(currentUrl + '/bookings', booking, {headers: headers});
   }
 }

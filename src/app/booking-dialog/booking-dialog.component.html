@@ -7,9 +7,15 @@
         <mat-label>Booking Id</mat-label>
         <input matInput [(ngModel)]="booking.bookingId" type="number">
     </mat-form-field> -->
-    <mat-form-field appearance="outline">
+    <mat-form-field *ngIf="this.userRole == 'Counter'" appearance="outline">
         <mat-label>Patron</mat-label>
         <input matInput [(ngModel)]="booking.patron" #patron='ngModel' required>
+    </mat-form-field>
+    <mat-form-field *ngIf="userRole == 'Agent'">
+        <mat-label>Select a Client</mat-label>
+        <mat-select [(ngModel)]="booking.patron" #patron='ngModel' required>
+            <mat-option *ngFor="let client of clients;" [value]="client.client">{{client.client}}</mat-option>
+        </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Ticket Price</mat-label>
@@ -19,13 +25,15 @@
         <mat-label>Number Of Tickets</mat-label>
         <input matInput [(ngModel)]="booking.numberOfTickets" #numberOfTickets='ngModel' type="number" required>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <div [(ngModel)]="booking.patron" #patron='ngModel' name="customerPatronHolder" ngDefaultControl></div>
+    <!-- <mat-form-field appearance="outline">
         <mat-label>Booking Agent</mat-label>
         <input matInput [(ngModel)]="booking.bookingAgent" #bookingAgent='ngModel' required>
-    </mat-form-field>
+    </mat-form-field> -->
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button *ngIf='isValid(patron, numberOfTickets, bookingAgent)' [mat-dialog-close]="booking">Submit</button>
-    <button mat-button disabled *ngIf='!isValid(patron, numberOfTickets, bookingAgent)'>Submit</button>
+    <button mat-button *ngIf='isValid(patron, numberOfTickets)'
+        [mat-dialog-close]="booking">Submit</button>
+    <button mat-button disabled *ngIf='!isValid(patron, numberOfTickets)'>Submit</button>
 </div>

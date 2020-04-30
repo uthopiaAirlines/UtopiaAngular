@@ -28,7 +28,7 @@ export class BookingsComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
 
-    //get the claims of user
+    //get the claims of user this.oauthService.hasValidAccessToken()
     let user: claims;
     if (this.oauthService.hasValidAccessToken()) {
       user = this.oauthService.getIdentityClaims();

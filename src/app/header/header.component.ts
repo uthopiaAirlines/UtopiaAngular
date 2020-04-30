@@ -3,6 +3,7 @@ import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
 
 export const authconfig: AuthConfig = {
+  logoutUrl: `https://ss-utopia.auth.us-east-1.amazoncognito.com/logout?client_id=2dlb0mog85rvn43g5inhnqb111&logout_uri=http://localhost:4200`,
   issuer: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iPhgdkopW',
   redirectUri: window.location.origin,
   clientId: '2dlb0mog85rvn43g5inhnqb111',
@@ -33,7 +34,8 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.oauthService.logOut();
+    this.oauthService.logOut(false);
+    //this.oauthService.logOut();
     this._router.navigateByUrl('home');
   }
 
