@@ -56,10 +56,10 @@ export class FlightsDataSource extends DataSource<Flight> {
       // }, error => {console.log(error)})
       return this.getPagedData(this.getSortedData([...this.dataArray.filter((flight) => {
         return (flight.airline.toString().includes(this.filterString) ||
-                flight.arrivalLocation.name.includes(this.filterString) ||
+                flight.arrivalLocation.name.toLowerCase().includes(this.filterString) ||
                 flight.arrivalTime.toLocaleString().includes(this.filterString) ||
                 flight.availableSeats.toString().includes(this.filterString) || 
-                flight.departureLocation.name.includes(this.filterString) || 
+                flight.departureLocation.name.toLocaleLowerCase().includes(this.filterString) || 
                 flight.departureTime.toLocaleString().includes(this.filterString) ||
                 flight.flightId.toString().includes(this.filterString) ||
                 flight.price.toString().includes(this.filterString))
