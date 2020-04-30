@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 //Components
 import { AppComponent } from './app.component';
@@ -38,6 +39,8 @@ import { SelectedBookingComponent, DeletionConfirmation } from './bookings/selec
 import { BookingService } from './service/booking/booking-service.service';
 import { AuthGuardService } from './service/authGuard/auth-guard.service'
 import { FlightService } from './service/flight/flight.service';
+import { AgentRegistrationComponent, RegistrationDialog, DeregistrationDialog } from './agent-registration/agent-registration.component';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 
 
@@ -51,9 +54,13 @@ import { FlightService } from './service/flight/flight.service';
     HomeComponent,
     HeaderComponent,
     BookingDialogComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AgentRegistrationComponent,
+    RegistrationDialog,
+    DeregistrationDialog,
+    ErrorDialogComponent
   ],
-  entryComponents: [DeletionConfirmation, BookingDialogComponent],
+  entryComponents: [DeletionConfirmation, BookingDialogComponent, RegistrationDialog, DeregistrationDialog, ErrorDialogComponent],
   imports: [
     BrowserModule,
     MatSelectModule,
@@ -79,6 +86,7 @@ import { FlightService } from './service/flight/flight.service';
     FormsModule,
     MatProgressSpinnerModule,
     MatInputModule,
+    MatCardModule,
     MatProgressBarModule,
     OAuthModule.forRoot()
   ],

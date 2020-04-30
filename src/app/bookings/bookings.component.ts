@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { claims } from '../domain/oauthTokenClaims';
 import { BookingService } from '../service/booking/booking-service.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 
 @Component({
@@ -21,21 +23,16 @@ export class BookingsComponent implements OnInit {
   userRole;
   loading = false;
 
-  constructor(private _router: Router, private bookingServ: BookingService, private oauthService: OAuthService) { };
+  constructor(private _router: Router, private bookingServ: BookingService, private oauthService: OAuthService, private dialog: MatDialog) { };
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   ngOnInit() {
     this.loading = true;
 
-    //get the claims of user this.oauthService.hasValidAccessToken()
-    let user: claims;
-    if (this.oauthService.hasValidAccessToken()) {
-      user = this.oauthService.getIdentityClaims();
-      this.userRole = user["cognito:groups"][0];
-    } else {
-      this._router.navigateByUrl('home');
-    }
+    //get the claims of user
+    let user: claims = this.oauthService.getIdentityClaims();
+    this.userRole = user["cognito:groups"][0];
 
     //different booking actions per role
     if (this.userRole == "Customer") {
@@ -47,33 +44,68 @@ export class BookingsComponent implements OnInit {
     }
 
     else if (this.userRole == "Counter") {
-
+      this.getAllUsers();
     }
 
     this.loading = false;
   };
 
+  //For Counter
+  getAllUsers() {
+    this.bookingServ.getUserCounter().subscribe(res => {
+      this.clients = res;
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      })
+  }
+
+  getBookingsOfUser(clientId) {
+    this.loading = true;
+    this.bookingServ.getUsersBookingsCounter(clientId).subscribe(res => {
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.paginator = this.paginator;
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      })
+    this.loading = false;
+  }
+
   //For Agents
   getClientsOfAgent(agentId) {
     this.bookingServ.getClientByAgent(agentId).subscribe(res => {
       this.clients = res;
-    })
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      })
   }
 
 
   getBookingsOfClient(clientId) {
+    this.loading = true;
     this.bookingServ.getClientsBookings(clientId).subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
-    })
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      })
+    this.loading = false;
   }
 
   //For Customers
   getBookingsBySub(sub) {
+    this.loading = true;
     this.bookingServ.getBookingsByUserCustomer(sub).subscribe(flights => {
       this.dataSource = new MatTableDataSource(flights);
       this.dataSource.paginator = this.paginator;
-    });
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      });
+    this.loading = false;
   };
 
   //For Everyone

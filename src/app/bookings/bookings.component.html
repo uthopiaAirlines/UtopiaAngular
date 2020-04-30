@@ -7,6 +7,13 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field *ngIf="userRole == 'Counter'">
+    <mat-label>Select a User</mat-label>
+    <mat-select [(value)]="selectedClient" (selectionChange)="getBookingsOfClient($event.value.sub)">
+      <mat-option *ngFor="let client of clients;" [value]="client">{{client.username}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
 
   <table mat-table [dataSource]="dataSource">
 

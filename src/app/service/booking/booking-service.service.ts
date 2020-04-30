@@ -1,7 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { SESSION_STORAGE, WebStorageService } from 'angular-webstorage-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment'
 import { OAuthService } from 'angular-oauth2-oidc';
+
+const url = environment.urls;
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +28,44 @@ export class BookingService {
   //Hits the Customer Api
   deleteBookingCustomer(booking) {
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.delete(`http://localhost:3000/online/1.0.0/bookings/${booking.bookingId}`, { headers: headers });
+    return this.http.delete(url.customer + `/bookings/${booking.bookingId}`, { headers: headers });
   }
 
   getBookingsByUserCustomer(userId) {
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.get<[]>(`http://localhost:3000/online/1.0.0/users/${userId}/bookings`, { headers: headers });
+    return this.http.get<[]>(url.customer + `/users/${userId}/bookings`, { headers: headers });
   }
 
 
   //Hits The Agent Api
   getClientByAgent(agentId) {
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.get<[]>(`https://awl22d7v57.execute-api.us-east-1.amazonaws.com/production/agents/${agentId}/clients`, { headers: headers })
+    return this.http.get<[]>(url.agent + `/agents/${agentId}/clients`, { headers: headers })
   }
 
   deleteBookingClient(booking) {
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.delete(`https://awl22d7v57.execute-api.us-east-1.amazonaws.com/production/bookings/${booking.bookingId}`, { headers: headers });
+    return this.http.delete(url.agent + `/bookings/${booking.bookingId}`, { headers: headers });
   }
 
   getClientsBookings(clientId) {
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.get<[]>(`https://awl22d7v57.execute-api.us-east-1.amazonaws.com/production/users/${clientId}/bookings`, { headers: headers })
+    return this.http.get<[]>(url.agent + `/users/${clientId}/bookings`, { headers: headers })
+  }
+
+  //Hits the Counter Api
+  getUserCounter() {
+    const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.get<[]>(url.counter + `/users/`, { headers: headers })
+  }
+
+  deleteBookingCounter(booking) {
+    const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.delete(url.counter + `/bookings/${booking.bookingId}`, { headers: headers });
+  }
+
+  getUsersBookingsCounter(userId) {
+    const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.get<[]>(url.counter + `/users/${userId}/bookings`, { headers: headers })
   }
 }

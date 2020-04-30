@@ -1,0 +1,9 @@
+.agentCard{
+    background-color: lavender;
+  }
+.agentContainer{
+    padding-top: 50px;
+    padding-right: 15%;
+    padding-bottom: 50px;
+    padding-left: 15%;
+}
