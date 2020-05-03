@@ -12,7 +12,7 @@ import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 export class PaymentInformationDialogComponent implements OnInit {
   // stripe;
   elements;
-
+  loading = false;
   style = {
     base: {
       color: "#32325d",
@@ -42,7 +42,7 @@ export class PaymentInformationDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.overlay.create();
+    this.loading = true;
     this.data.stripe.confirmCardPayment(this.data.client, { payment_method: { card: this.card } }).then(
       res => {
         if (!res.hasOwnProperty('error')) {
@@ -51,6 +51,7 @@ export class PaymentInformationDialogComponent implements OnInit {
           console.log(this.data.booking);
           this.flightService.createBooking(this.data.booking).subscribe(() => {
             this.dialog.closeAll();
+            this.loading = false;
           },
             err => {
               ////CREATE AN ERROR REFUND FUNCTION OR A CALLBACK TO TRY BOOKING AGAIN
@@ -65,10 +66,12 @@ export class PaymentInformationDialogComponent implements OnInit {
         else {
           this.dialog.closeAll();
           this.dialog.open(ErrorDialogComponent);
+          this.loading = false;
         }
       }
     ).catch(() => {
       this.dialog.closeAll();
+      this.loading = false;
       this.dialog.open(ErrorDialogComponent);
     })
   }

@@ -7,4 +7,7 @@
         <span id="button-text" (click)="onSubmit()">Pay</span>
     </button>
     <p id="card-errors" role="alert"></p>
+    <div *ngIf="loading" class="loadingCircle">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
 </form>
