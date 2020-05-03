@@ -9,6 +9,7 @@ import { StorageServiceModule } from 'angular-webstorage-service';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AppRoutingModule } from './app-routing.module';
 
+
 //Material Modules
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -25,6 +26,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 
+
 //Components
 import { AppComponent } from './app.component';
 import { BookingDialogComponent } from './booking-dialog/booking-dialog.component';
@@ -34,14 +36,15 @@ import { FlightsComponent } from './flights/flights.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { SelectedBookingComponent, DeletionConfirmation } from './bookings/selected-booking/selected-booking.component';
+import { AgentRegistrationComponent, RegistrationDialog, DeregistrationDialog } from './agent-registration/agent-registration.component';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+
 
 //Custom Services
 import { BookingService } from './service/booking/booking-service.service';
 import { AuthGuardService } from './service/authGuard/auth-guard.service'
 import { FlightService } from './service/flight/flight.service';
-import { AgentRegistrationComponent, RegistrationDialog, DeregistrationDialog } from './agent-registration/agent-registration.component';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
-
+import { PaymentInformationDialogComponent } from './payment-information-dialog/payment-information-dialog.component';
 
 
 @NgModule({
@@ -58,9 +61,10 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     AgentRegistrationComponent,
     RegistrationDialog,
     DeregistrationDialog,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    PaymentInformationDialogComponent
   ],
-  entryComponents: [DeletionConfirmation, BookingDialogComponent, RegistrationDialog, DeregistrationDialog, ErrorDialogComponent],
+  entryComponents: [DeletionConfirmation, BookingDialogComponent, RegistrationDialog, DeregistrationDialog, ErrorDialogComponent, PaymentInformationDialogComponent],
   imports: [
     BrowserModule,
     MatSelectModule,
@@ -88,7 +92,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
     MatInputModule,
     MatCardModule,
     MatProgressBarModule,
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
   ],
   providers: [
     FlightService,

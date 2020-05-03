@@ -35,15 +35,18 @@ export class AgentRegistrationComponent implements OnInit {
               agent.registered = true;
           });
         });
+        this.loading = false;
       },
         err => {
           this.dialog.open(ErrorDialogComponent);
+          this.loading = false;
         });
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       });
-    this.loading = false;
+
   }
 
   register(agent) {

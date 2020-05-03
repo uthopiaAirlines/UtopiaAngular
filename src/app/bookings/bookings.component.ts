@@ -47,16 +47,18 @@ export class BookingsComponent implements OnInit {
       this.getAllUsers();
     }
 
-    this.loading = false;
   };
 
   //For Counter
   getAllUsers() {
+    this.loading = true;
     this.bookingServ.getUserCounter().subscribe(res => {
       this.clients = res;
+      this.loading = false;
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       })
   }
 
@@ -65,20 +67,24 @@ export class BookingsComponent implements OnInit {
     this.bookingServ.getUsersBookingsCounter(clientId).subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
+      this.loading = false;
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       })
-    this.loading = false;
   }
 
   //For Agents
   getClientsOfAgent(agentId) {
+    this.loading = true;
     this.bookingServ.getClientByAgent(agentId).subscribe(res => {
       this.clients = res;
+      this.loading = false;
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       })
   }
 
@@ -88,11 +94,12 @@ export class BookingsComponent implements OnInit {
     this.bookingServ.getClientsBookings(clientId).subscribe(res => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
+      this.loading = false;
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       })
-    this.loading = false;
   }
 
   //For Customers
@@ -101,11 +108,13 @@ export class BookingsComponent implements OnInit {
     this.bookingServ.getBookingsByUserCustomer(sub).subscribe(flights => {
       this.dataSource = new MatTableDataSource(flights);
       this.dataSource.paginator = this.paginator;
+      this.loading = false;
     },
       err => {
         this.dialog.open(ErrorDialogComponent);
+        this.loading = false;
       });
-    this.loading = false;
+
   };
 
   //For Everyone

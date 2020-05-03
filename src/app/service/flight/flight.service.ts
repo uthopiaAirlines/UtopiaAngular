@@ -25,6 +25,14 @@ export class FlightService {
     }))
   }
 
+  createPaymentIntent(totalCost) {
+    let request = {
+      amount: totalCost * 100
+    };
+    const header = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.post("https://fah37lk7nd.execute-api.us-east-1.amazonaws.com/stripe-payment-intent", request, { headers: header });
+  }
+
   createBooking(booking: Booking) {
     booking.bookingAgent = this.oauthService.getIdentityClaims()["sub"];
     console.log(booking);
@@ -43,6 +51,7 @@ export class FlightService {
         break;
     }
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.post<Booking>(currentUrl + '/bookings', booking, {headers: headers});
+    console.log(headers);
+    return this.http.post<Booking>(currentUrl + '/bookings', booking, { headers: headers });
   }
 }
