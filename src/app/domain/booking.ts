@@ -5,4 +5,5 @@ export interface Booking {
     ticketPrice?: number;
     numberOfTickets?: number;
     bookingAgent?: string;
+    paymentId?: string;
 }
