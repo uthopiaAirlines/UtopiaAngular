@@ -25,6 +25,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 
 //Components
@@ -92,6 +93,7 @@ import { PaymentInformationDialogComponent } from './payment-information-dialog/
     MatInputModule,
     MatCardModule,
     MatProgressBarModule,
+    OverlayModule,
     OAuthModule.forRoot(),
   ],
   providers: [

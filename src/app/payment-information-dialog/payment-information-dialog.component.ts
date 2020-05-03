@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlightService } from '../service/flight/flight.service';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
-import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-payment-information-dialog',
@@ -31,7 +31,7 @@ export class PaymentInformationDialogComponent implements OnInit {
   };
   card;
 
-  constructor(private flightService: FlightService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data) { }
+  constructor(private flightService: FlightService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data, private overlay: Overlay) { }
 
   ngOnInit(): void {
     // this.stripe = Stripe('pk_test_X0Qd8APxhX2bwh3MvKMEEpgV00h4pRawT3');
@@ -42,7 +42,7 @@ export class PaymentInformationDialogComponent implements OnInit {
   }
 
   onSubmit() {
-
+    this.overlay.create();
     this.data.stripe.confirmCardPayment(this.data.client, { payment_method: { card: this.card } }).then(
       res => {
         if (!res.hasOwnProperty('error')) {
@@ -53,11 +53,12 @@ export class PaymentInformationDialogComponent implements OnInit {
             this.dialog.closeAll();
           },
             err => {
-              this.data.stripe.refunds.create({ payment_intent: this.data.booking.paymentId })
-                .then(() => {
-                  this.dialog.closeAll();
-                  this.dialog.open(ErrorDialogComponent);
-                })
+              ////CREATE AN ERROR REFUND FUNCTION OR A CALLBACK TO TRY BOOKING AGAIN
+              // this.data.stripe.refunds.create({ payment_intent: this.data.booking.paymentId })
+              //   .then(() => {
+              //     this.dialog.closeAll();
+              //     this.dialog.open(ErrorDialogComponent);
+              //   })
             }
           )
         }
