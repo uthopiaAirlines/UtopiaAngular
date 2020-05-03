@@ -11,6 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { BookingDialogComponent } from '../booking-dialog/booking-dialog.component';
 import { PaymentInformationDialogComponent } from '../payment-information-dialog/payment-information-dialog.component';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 declare const Stripe;
 
@@ -64,26 +65,26 @@ export class FlightsComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
-        console.log(res);
         let bookingReq: Booking = res;
         let totalCost = bookingReq.numberOfTickets * bookingReq.ticketPrice;
 
         //get paymentIntent object
         this.flightService.createPaymentIntent(totalCost.toFixed(2)).subscribe(
           res => {
-            let intentRes: intentResponse = res;
-            this.dialog.open(PaymentInformationDialogComponent,
-              { width: '50%', data: { stripe: this.stripe, client: intentRes.client_secret, booking: bookingReq } })
-              .afterClosed().subscribe(res => {
-                console.log(res);
-                this.table.renderRows();
-                if (res) {
-
-                }
-              })
+            if (!res.hasOwnProperty("error")) {
+              let intentRes: intentResponse = res;
+              this.dialog.open(PaymentInformationDialogComponent,
+                { width: '50%', data: { stripe: this.stripe, client: intentRes.client_secret, booking: bookingReq } })
+                .afterClosed().subscribe(res => {
+                  this.table.renderRows();
+                })
+            }
+            else {
+              this.dialog.open(ErrorDialogComponent);
+            }
           },
           err => {
-
+            this.dialog.open(ErrorDialogComponent);
           })
       }
     })

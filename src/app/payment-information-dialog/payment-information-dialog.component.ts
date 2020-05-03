@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlightService } from '../service/flight/flight.service';
-import { intentResponse } from '../domain/intentResponse';
-// declare const Stripe;
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 
 @Component({
   selector: 'app-payment-information-dialog',
@@ -45,18 +45,30 @@ export class PaymentInformationDialogComponent implements OnInit {
 
     this.data.stripe.confirmCardPayment(this.data.client, { payment_method: { card: this.card } }).then(
       res => {
-        console.log("payment attached");
-        console.log(res);
         if (!res.hasOwnProperty('error')) {
-          let confirmation: intentResponse = res;
-          this.data.booking.paymentId = confirmation.id;
+          let confirmation = res;
+          this.data.booking.paymentId = confirmation.paymentIntent.id;
+          console.log(this.data.booking);
           this.flightService.createBooking(this.data.booking).subscribe(() => {
             this.dialog.closeAll();
-          }
+          },
+            err => {
+              this.data.stripe.refunds.create({ payment_intent: this.data.booking.paymentId })
+                .then(() => {
+                  this.dialog.closeAll();
+                  this.dialog.open(ErrorDialogComponent);
+                })
+            }
           )
         }
+        else {
+          this.dialog.closeAll();
+          this.dialog.open(ErrorDialogComponent);
+        }
       }
-    ).catch()
+    ).catch(() => {
+      this.dialog.closeAll();
+      this.dialog.open(ErrorDialogComponent);
+    })
   }
-
 }
