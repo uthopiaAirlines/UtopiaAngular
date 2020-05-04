@@ -46,6 +46,7 @@ import { BookingService } from './service/booking/booking-service.service';
 import { AuthGuardService } from './service/authGuard/auth-guard.service'
 import { FlightService } from './service/flight/flight.service';
 import { PaymentInformationDialogComponent } from './payment-information-dialog/payment-information-dialog.component';
+import { LoaderOverlayComponent } from './loader-overlay/loader-overlay.component';
 
 
 @NgModule({
@@ -63,9 +64,11 @@ import { PaymentInformationDialogComponent } from './payment-information-dialog/
     RegistrationDialog,
     DeregistrationDialog,
     ErrorDialogComponent,
-    PaymentInformationDialogComponent
+    PaymentInformationDialogComponent,
+    LoaderOverlayComponent
   ],
-  entryComponents: [DeletionConfirmation, BookingDialogComponent, RegistrationDialog, DeregistrationDialog, ErrorDialogComponent, PaymentInformationDialogComponent],
+  entryComponents: [DeletionConfirmation, BookingDialogComponent, RegistrationDialog, DeregistrationDialog,
+    LoaderOverlayComponent, ErrorDialogComponent, PaymentInformationDialogComponent],
   imports: [
     BrowserModule,
     MatSelectModule,
