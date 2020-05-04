@@ -1,5 +1,13 @@
 <div class="mat-elevation-z8">
 
+  <h3 *ngIf="this.isLoggedIn">
+    Select a flight to make a booking
+  </h3>
+
+  <h3 *ngIf="!this.isLoggedIn">
+    Please log in to make a booking
+  </h3>
+
   <mat-form-field>
     <mat-label>Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
@@ -56,7 +64,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(row)" [class.isLoggedIn]="!this.isLoggedIn"></tr>
   </table>
 
   <mat-paginator #paginator [length]="dataSource?.dataLength" [pageIndex]="0" [pageSize]="50"

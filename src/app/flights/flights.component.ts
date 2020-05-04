@@ -26,6 +26,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   @ViewChild(MatTable) table: MatTable<Flight>;
   dataSource: FlightsDataSource;
   userRole: string;
+  isLoggedIn: boolean;
 
   stripe;
 
@@ -40,8 +41,11 @@ export class FlightsComponent implements AfterViewInit, OnInit {
 
     this.dataSource = new FlightsDataSource(this.flightService);
     if (this.oauthService.hasValidAccessToken()) {
+      this.isLoggedIn = true;
       this.userRole = this.oauthService.getIdentityClaims()["cognito:groups"][0];
     }
+    else
+      this.isLoggedIn = false;
   }
 
 
@@ -57,7 +61,11 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   }
 
   openDialog(row): void {
-    if (!this.oauthService.hasValidAccessToken()) return;
+    if (!this.oauthService.hasValidAccessToken()) {
+      this.isLoggedIn = false;
+      return;
+    }
+    this.isLoggedIn = true;
     let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0 }
     const dialogRef = this.dialog.open(BookingDialogComponent, {
       data: { ...booking }
