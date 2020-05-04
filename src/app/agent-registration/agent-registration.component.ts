@@ -71,6 +71,7 @@ export class AgentRegistrationComponent implements OnInit {
       }
     }, err => {
       this.dialog.closeAll();
+      this.dialog.open(ErrorDialogComponent);
     });
   }
 
@@ -95,7 +96,8 @@ export class RegistrationDialog implements OnInit {
       this.agentServ.setStatusChange(true);
       this.dialog.closeAll();
     }, err => {
-      throw err;
+      this.dialog.closeAll();
+      this.dialog.open(ErrorDialogComponent);
     });
   }
 }
@@ -119,8 +121,10 @@ export class DeregistrationDialog implements OnInit {
       this.agentServ.setStatusChange(true);
       this.dialog.closeAll();
     }, err => {
-      throw err;
+      this.dialog.closeAll();
+      this.dialog.open(ErrorDialogComponent);
     });
   }
+
 }
 

@@ -41,8 +41,9 @@ export class AgentRegistrationService {
     return this.http.get<[]>(url + `/users/${userId}/agents/`, { headers: headers })
   }
   registerUserWithAgent(clientId, agentId) {
+    console.log(this.oauthService.authorizationHeader());
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    return this.http.post(url + `/agents/${agentId}/clients/${clientId}`, { headers: headers })
+    return this.http.post(url + `/agents/${agentId}/clients/${clientId}`, null, { headers: headers })
   }
 
   deregisterUserWithAgent(clientId, agentId) {

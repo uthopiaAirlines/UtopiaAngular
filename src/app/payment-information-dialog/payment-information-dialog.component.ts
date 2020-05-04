@@ -2,7 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FlightService } from '../service/flight/flight.service';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
-import { OverlayModule, Overlay } from '@angular/cdk/overlay';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { LoaderOverlayComponent } from '../loader-overlay/loader-overlay.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment-information-dialog',
@@ -12,7 +15,6 @@ import { OverlayModule, Overlay } from '@angular/cdk/overlay';
 export class PaymentInformationDialogComponent implements OnInit {
   // stripe;
   elements;
-
   style = {
     base: {
       color: "#32325d",
@@ -30,8 +32,9 @@ export class PaymentInformationDialogComponent implements OnInit {
     }
   };
   card;
+  overlayRef;
 
-  constructor(private flightService: FlightService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data, private overlay: Overlay) { }
+  constructor(private router: Router, private flightService: FlightService, public dialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data, private overlay: Overlay) { }
 
   ngOnInit(): void {
     // this.stripe = Stripe('pk_test_X0Qd8APxhX2bwh3MvKMEEpgV00h4pRawT3');
@@ -42,7 +45,7 @@ export class PaymentInformationDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    this.overlay.create();
+    this.showOverlay()
     this.data.stripe.confirmCardPayment(this.data.client, { payment_method: { card: this.card } }).then(
       res => {
         if (!res.hasOwnProperty('error')) {
@@ -51,8 +54,13 @@ export class PaymentInformationDialogComponent implements OnInit {
           console.log(this.data.booking);
           this.flightService.createBooking(this.data.booking).subscribe(() => {
             this.dialog.closeAll();
+            this.closeOverlay();
+            this.router.navigateByUrl('/bookings')
           },
             err => {
+              this.closeOverlay();
+              this.dialog.closeAll();
+              this.dialog.open(ErrorDialogComponent);
               ////CREATE AN ERROR REFUND FUNCTION OR A CALLBACK TO TRY BOOKING AGAIN
               // this.data.stripe.refunds.create({ payment_intent: this.data.booking.paymentId })
               //   .then(() => {
@@ -63,13 +71,27 @@ export class PaymentInformationDialogComponent implements OnInit {
           )
         }
         else {
+          this.closeOverlay();
           this.dialog.closeAll();
           this.dialog.open(ErrorDialogComponent);
         }
       }
     ).catch(() => {
+      this.closeOverlay();
       this.dialog.closeAll();
       this.dialog.open(ErrorDialogComponent);
     })
+  }
+
+  showOverlay() {
+    this.overlayRef = this.overlay.create({
+      positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
+      hasBackdrop: true
+    });
+    this.overlayRef.attach(new ComponentPortal(LoaderOverlayComponent));
+  }
+
+  closeOverlay() {
+    this.overlayRef.detach();
   }
 }

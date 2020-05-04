@@ -13,6 +13,10 @@ import { PaymentInformationDialogComponent } from '../payment-information-dialog
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { LoaderOverlayComponent } from '../loader-overlay/loader-overlay.component';
+
 declare const Stripe;
 
 @Component({
@@ -29,12 +33,13 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   isLoggedIn: boolean;
 
   stripe;
+  overlayRef;
 
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['flightId', 'airline', 'arrivalTime', 'arrivalLocation', 'departureTime', 'departureLocation', 'availableSeats', 'price'];
 
-  constructor(private flightService: FlightService, public dialog: MatDialog, public oauthService: OAuthService) { }
+  constructor(private overlay: Overlay, private flightService: FlightService, public dialog: MatDialog, public oauthService: OAuthService) { }
 
   ngOnInit() {
     this.stripe = Stripe('pk_test_X0Qd8APxhX2bwh3MvKMEEpgV00h4pRawT3');
@@ -73,6 +78,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
+        this.showOverlay();
         let bookingReq: Booking = res;
         let totalCost = bookingReq.numberOfTickets * bookingReq.ticketPrice;
 
@@ -81,6 +87,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
           res => {
             if (!res.hasOwnProperty("error")) {
               let intentRes: intentResponse = res;
+              this.closeOverlay()
               this.dialog.open(PaymentInformationDialogComponent,
                 { width: '50%', data: { stripe: this.stripe, client: intentRes.client_secret, booking: bookingReq } })
                 .afterClosed().subscribe(res => {
@@ -100,6 +107,18 @@ export class FlightsComponent implements AfterViewInit, OnInit {
 
   dateFormated(date) {
     return new Date(date);
+  }
+
+  showOverlay() {
+    this.overlayRef = this.overlay.create({
+      positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
+      hasBackdrop: true
+    });
+    this.overlayRef.attach(new ComponentPortal(LoaderOverlayComponent));
+  }
+
+  closeOverlay() {
+    this.overlayRef.detach();
   }
 
 }
