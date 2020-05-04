@@ -87,7 +87,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
           res => {
             if (!res.hasOwnProperty("error")) {
               let intentRes: intentResponse = res;
-              this.closeOverlay()
+              this.closeOverlay();
               this.dialog.open(PaymentInformationDialogComponent,
                 { width: '50%', data: { stripe: this.stripe, client: intentRes.client_secret, booking: bookingReq } })
                 .afterClosed().subscribe(res => {
@@ -95,10 +95,12 @@ export class FlightsComponent implements AfterViewInit, OnInit {
                 })
             }
             else {
+              this.closeOverlay();
               this.dialog.open(ErrorDialogComponent);
             }
           },
           err => {
+            this.closeOverlay();
             this.dialog.open(ErrorDialogComponent);
           })
       }
