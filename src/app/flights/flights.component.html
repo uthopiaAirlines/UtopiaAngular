@@ -1,5 +1,13 @@
 <div class="mat-elevation-z8">
 
+  <h3 *ngIf="this.isLoggedIn">
+    Select a flight to make a booking
+  </h3>
+
+  <h3 *ngIf="!this.isLoggedIn">
+    Please log in to make a booking
+  </h3>
+
   <mat-form-field>
     <mat-label>Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
