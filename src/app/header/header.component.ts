@@ -5,7 +5,7 @@ import { CustomerAuthService } from '../service/authGuard/customer-auth.service'
 import { claims } from '../domain/oauthTokenClaims';
 
 export const authconfig: AuthConfig = {
-  logoutUrl: `https://ss-utopia.auth.us-east-1.amazoncognito.com/logout?client_id=2dlb0mog85rvn43g5inhnqb111&logout_uri=http://localhost:4200`,
+  logoutUrl: `https://ss-utopia.auth.us-east-1.amazoncognito.com/logout?client_id=2dlb0mog85rvn43g5inhnqb111&logout_uri=https://www.utopiaairlines.com`,
   issuer: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iPhgdkopW',
   redirectUri: window.location.origin,
   clientId: '2dlb0mog85rvn43g5inhnqb111',
