@@ -41,7 +41,7 @@
     <!-- departureTime Column -->
     <ng-container matColumnDef="departureTime">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Departure Time</th>
-      <td mat-cell *matCellDef="let row">{{dateFormated(row.departureTime)}}</td>
+      <!--<td mat-cell *matCellDef="let row">{{dateFormated(row.departureTime)}}</td> -->
       <td mat-cell *matCellDef="let row">{{row.departureTime.toLocaleString()}}</td>
     </ng-container>
 
