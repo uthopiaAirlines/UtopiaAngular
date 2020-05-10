@@ -37,7 +37,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
 
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['flightId', 'airline', 'arrivalTime', 'arrivalLocation', 'departureTime', 'departureLocation', 'availableSeats', 'price'];
+  displayedColumns = ['flightId', 'airline', 'departureLocation', 'departureTime', 'arrivalLocation', 'arrivalTime', 'availableSeats', 'price'];
 
   constructor(private overlay: Overlay, private flightService: FlightService, public dialog: MatDialog, public oauthService: OAuthService) { }
 

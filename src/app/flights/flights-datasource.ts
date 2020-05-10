@@ -55,7 +55,7 @@ export class FlightsDataSource extends DataSource<Flight> {
       //   this.dataLength = this.dataArray.length;
       // }, error => {console.log(error)})
       return this.getPagedData(this.getSortedData([...this.dataArray.filter((flight) => {
-        return (flight.airline.toString().includes(this.filterString) ||
+        return (flight.airline.name.toLowerCase().includes(this.filterString) ||
                 flight.arrivalLocation.name.toLowerCase().includes(this.filterString) ||
                 flight.arrivalTime.toLocaleString().includes(this.filterString) ||
                 flight.availableSeats.toString().includes(this.filterString) || 
@@ -108,7 +108,7 @@ export class FlightsDataSource extends DataSource<Flight> {
         case 'availableSeats': return compare(+a.availableSeats, +b.availableSeats, isAsc);
         case 'arrivalTime': return compare(+a.arrivalTime.getTime(), +b.arrivalTime.getTime(), isAsc);
         case 'arrivalLocation': return compare(a.arrivalLocation.name, b.arrivalLocation.name, isAsc);
-        case 'airline': return compare(+a.airline, +b.airline, isAsc);
+        case 'airline': return compare(+a.airline.name, +b.airline.name, isAsc);
         default: return 0;
       }
     });

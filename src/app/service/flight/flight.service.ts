@@ -16,7 +16,7 @@ export class FlightService {
   constructor(private http: HttpClient, private oauthService: OAuthService) { }
 
   getFlights() {
-    return this.http.get<Flight[]>(url.counter + '/flights').pipe(map((data) => {
+    return this.http.get<Flight[]>(url.customer + '/flights').pipe(map((data) => {
       data.forEach((flight) => {
         flight.arrivalTime = new Date(flight.arrivalTime);
         flight.departureTime = new Date(flight.departureTime);

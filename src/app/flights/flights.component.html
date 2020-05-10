@@ -23,7 +23,7 @@
     <!-- airline Column -->
     <ng-container matColumnDef="airline">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Airline</th>
-      <td mat-cell *matCellDef="let row">{{row.airline}}</td>
+      <td mat-cell *matCellDef="let row">{{row.airline.name}}</td>
     </ng-container>
 
     <!-- arrivalTime Column -->
@@ -60,7 +60,7 @@
     <!-- price Column -->
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
-      <td mat-cell *matCellDef="let row">{{row.price}}</td>
+      <td mat-cell *matCellDef="let row">${{row.price}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
