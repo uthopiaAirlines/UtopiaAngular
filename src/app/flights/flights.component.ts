@@ -71,7 +71,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
       return;
     }
     this.isLoggedIn = true;
-    let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0 }
+    let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0, numberOfTickets: row.availableSeats}
     const dialogRef = this.dialog.open(BookingDialogComponent, {
       data: { ...booking }
     });
