@@ -16,6 +16,7 @@ export class BookingDialogComponent implements OnInit {
   userRole: string;
   clients: any[];
   user: claims;
+  maxTickets: number;
 
   constructor(
     public dialogRef: MatDialogRef<BookingDialogComponent>,
@@ -25,6 +26,7 @@ export class BookingDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //console.log(this.booking.numberOfTickets);
     if (this.oauthService.hasValidAccessToken()) {
       this.userRole = this.oauthService.getIdentityClaims()["cognito:groups"][0];
       this.user = this.oauthService.getIdentityClaims();
@@ -42,6 +44,8 @@ export class BookingDialogComponent implements OnInit {
           break;
       }
     }
+    this.maxTickets = this.booking.numberOfTickets;
+    this.booking.numberOfTickets = 1;
   }
 
   isValid(patron: NgModel, numberOfTickets: NgModel) {

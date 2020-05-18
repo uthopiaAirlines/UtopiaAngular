@@ -23,7 +23,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Number Of Tickets</mat-label>
-        <input matInput [(ngModel)]="booking.numberOfTickets" #numberOfTickets='ngModel' type="number" min="0" oninput="validity.valid||(value='');" required>
+        <input matInput [(ngModel)]="booking.numberOfTickets" #numberOfTickets='ngModel' type="number" min="1" [max]="maxTickets" oninput="validity.valid||(value='');" required>
     </mat-form-field>
     <div [(ngModel)]="booking.patron" #patron='ngModel' name="customerPatronHolder" ngDefaultControl></div>
     <!-- <mat-form-field appearance="outline">
