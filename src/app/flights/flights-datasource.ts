@@ -61,7 +61,6 @@ export class FlightsDataSource extends DataSource<Flight> {
         this.filterString).toPromise().then(res => {
           this.dataArray = res.data;
           this.dataLength = res.totalFlights;
-          console.log(res.data);
           return res.data;
         });
     }))

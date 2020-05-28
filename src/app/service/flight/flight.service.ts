@@ -52,7 +52,6 @@ export class FlightService {
 
   createBooking(booking: Booking) {
     booking.bookingAgent = this.oauthService.getIdentityClaims()["sub"];
-    console.log(booking);
     let currentUrl: string;
     switch (this.oauthService.getIdentityClaims()["cognito:groups"][0]) {
       case "Agent":
@@ -68,7 +67,6 @@ export class FlightService {
         break;
     }
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    console.log(headers);
     return this.http.post<Booking>(currentUrl + '/bookings', booking, { headers: headers });
   }
 }
