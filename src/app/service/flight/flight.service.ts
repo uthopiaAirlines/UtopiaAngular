@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Flight } from '../../domain/flight'
 import { environment } from '../../../environments/environment'
 import { Booking } from 'src/app/domain/booking';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map } from 'rxjs/operators';
+import { PagedData } from 'src/app/domain/pagedData';
 
 const url = environment.urls;
 
@@ -18,6 +19,23 @@ export class FlightService {
   getFlights() {
     return this.http.get<Flight[]>(url.customer + '/flights').pipe(map((data) => {
       data.forEach((flight) => {
+        flight.arrivalTime = new Date(flight.arrivalTime);
+        flight.departureTime = new Date(flight.departureTime);
+      });
+      return data;
+    }))
+  }
+
+  getPagedFlights(pageSize: Number, currentPage: Number, sortItem: string, isAsc: boolean, filterString: string) {
+    let params = new HttpParams()
+                        .set('pageSize', pageSize.toString())
+                        .set('currentPage', currentPage.toString())
+                        .set('sortItem', sortItem)
+                        .set('isAsc', String(isAsc))
+                        .set('filterString', filterString);
+    return this.http.get<PagedData>(url.counter + '/flights', { params: params }).pipe(map((data) => {
+      console.log(data);
+      data.data.forEach((flight) => {
         flight.arrivalTime = new Date(flight.arrivalTime);
         flight.departureTime = new Date(flight.departureTime);
       });
