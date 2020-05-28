@@ -34,7 +34,6 @@ export class FlightService {
                         .set('isAsc', String(isAsc))
                         .set('filterString', filterString);
     return this.http.get<PagedData>(url.counter + '/flights', { params: params }).pipe(map((data) => {
-      console.log(data);
       data.data.forEach((flight) => {
         flight.arrivalTime = new Date(flight.arrivalTime);
         flight.departureTime = new Date(flight.departureTime);
