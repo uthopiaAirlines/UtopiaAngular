@@ -26,13 +26,18 @@ export class FlightService {
     }))
   }
 
+  getUserCounter() {
+    const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
+    return this.http.get<[]>(url.counter + `/users/`, { headers: headers })
+  }
+
   getPagedFlights(pageSize: Number, currentPage: Number, sortItem: string, isAsc: boolean, filterString: string) {
     let params = new HttpParams()
-                        .set('pageSize', pageSize.toString())
-                        .set('currentPage', currentPage.toString())
-                        .set('sortItem', sortItem)
-                        .set('isAsc', String(isAsc))
-                        .set('filterString', filterString);
+      .set('pageSize', pageSize.toString())
+      .set('currentPage', currentPage.toString())
+      .set('sortItem', sortItem)
+      .set('isAsc', String(isAsc))
+      .set('filterString', filterString);
     return this.http.get<PagedData>(url.counter + '/flights', { params: params }).pipe(map((data) => {
       data.data.forEach((flight) => {
         flight.arrivalTime = new Date(flight.arrivalTime);
