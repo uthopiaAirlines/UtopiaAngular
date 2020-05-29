@@ -31,6 +31,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   dataSource: FlightsDataSource;
   userRole: string;
   isLoggedIn: boolean;
+  loading = false;
 
   stripe;
   overlayRef;
@@ -61,8 +62,10 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   }
 
   applyFilter(event: Event) {
+    this.loading = true;
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter(filterValue.trim().toLowerCase());
+    this.loading = false;
   }
 
   openDialog(row): void {

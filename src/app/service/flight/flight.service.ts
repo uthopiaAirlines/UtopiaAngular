@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHandler, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Flight } from '../../domain/flight'
 import { environment } from '../../../environments/environment'
 import { Booking } from 'src/app/domain/booking';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map } from 'rxjs/operators';
+import { PagedData } from 'src/app/domain/pagedData';
 
 const url = environment.urls;
 
@@ -25,6 +26,22 @@ export class FlightService {
     }))
   }
 
+  getPagedFlights(pageSize: Number, currentPage: Number, sortItem: string, isAsc: boolean, filterString: string) {
+    let params = new HttpParams()
+                        .set('pageSize', pageSize.toString())
+                        .set('currentPage', currentPage.toString())
+                        .set('sortItem', sortItem)
+                        .set('isAsc', String(isAsc))
+                        .set('filterString', filterString);
+    return this.http.get<PagedData>(url.counter + '/flights', { params: params }).pipe(map((data) => {
+      data.data.forEach((flight) => {
+        flight.arrivalTime = new Date(flight.arrivalTime);
+        flight.departureTime = new Date(flight.departureTime);
+      });
+      return data;
+    }))
+  }
+
   createPaymentIntent(totalCost) {
     let request = {
       amount: totalCost * 100
@@ -35,7 +52,6 @@ export class FlightService {
 
   createBooking(booking: Booking) {
     booking.bookingAgent = this.oauthService.getIdentityClaims()["sub"];
-    console.log(booking);
     let currentUrl: string;
     switch (this.oauthService.getIdentityClaims()["cognito:groups"][0]) {
       case "Agent":
@@ -51,7 +67,6 @@ export class FlightService {
         break;
     }
     const headers = new HttpHeaders().set('Authorization', this.oauthService.authorizationHeader());
-    console.log(headers);
     return this.http.post<Booking>(currentUrl + '/bookings', booking, { headers: headers });
   }
 }

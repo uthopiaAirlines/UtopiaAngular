@@ -1,10 +1,11 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, Subject } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { Observable, of as observableOf, merge, Subject, of } from 'rxjs';
 import { Flight } from '../domain/flight';
 import { FlightService } from '../service/flight/flight.service'
+import { PagedData } from '../domain/pagedData';
 
 /**
  * Data source for the Flights view. This class should
@@ -12,7 +13,7 @@ import { FlightService } from '../service/flight/flight.service'
  * (including sorting, pagination, and filtering).
  */
 export class FlightsDataSource extends DataSource<Flight> {
-  data: Observable<Flight[]>;
+  data: Observable<PagedData>;
   dataArray: Flight[] = [];
   dataLength = 0;
   paginator: MatPaginator;
@@ -23,16 +24,16 @@ export class FlightsDataSource extends DataSource<Flight> {
 
   constructor(private flightService: FlightService) {
     super();
-    this.data = flightService.getFlights();
+    this.data = flightService.getPagedFlights(10, 0, 'flightId', true, this.filterString);
     this.filterSubject = new Subject<string>();
     this.filterObservable = this.filterSubject.asObservable();
     this.filterObservable.subscribe(res => {
       this.filterString = res;
     });
     this.data.subscribe(res => {
-      this.dataArray = res;
-      this.dataLength = this.dataArray.length;
-    }, error => {console.log(error)})
+      this.dataArray = res.data;
+      this.dataLength = res.totalFiltered;
+    }, error => { console.log(error) })
   }
 
   /**
@@ -40,6 +41,8 @@ export class FlightsDataSource extends DataSource<Flight> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
+
+
   connect(): Observable<Flight[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
@@ -49,29 +52,20 @@ export class FlightsDataSource extends DataSource<Flight> {
       this.sort.sortChange,
       this.filterObservable
     ];
-    return merge(...dataMutations).pipe(map(() => {
-      // this.data.subscribe(res => {
-      //   this.dataArray = res;
-      //   this.dataLength = this.dataArray.length;
-      // }, error => {console.log(error)})
-      return this.getPagedData(this.getSortedData([...this.dataArray.filter((flight) => {
-        return (flight.airline.name.toLowerCase().includes(this.filterString) ||
-                flight.arrivalLocation.name.toLowerCase().includes(this.filterString) ||
-                flight.arrivalTime.toLocaleString().includes(this.filterString) ||
-                flight.availableSeats.toString().includes(this.filterString) || 
-                flight.departureLocation.name.toLocaleLowerCase().includes(this.filterString) || 
-                flight.departureTime.toLocaleString().includes(this.filterString) ||
-                flight.flightId.toString().includes(this.filterString) ||
-                flight.price.toString().includes(this.filterString))
-      })]));
-    }));
+    return merge(...dataMutations).pipe(mergeMap(() => {
+      return this.flightService.getPagedFlights(
+        this.paginator.pageSize,
+        this.paginator.pageIndex,
+        ((this.sort.active === undefined) ? 'flightId' : this.sort.active),
+        ((this.sort.direction === 'desc') ? false : true),
+        this.filterString).toPromise().then(res => {
+          this.dataArray = res.data;
+          this.dataLength = res.totalFiltered;
+          return res.data;
+        });
+    }))
   }
-
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
-  disconnect() {}
+  disconnect() { }
 
   filter(filterValue: string) {
     this.filterSubject.next(filterValue);
@@ -79,43 +73,4 @@ export class FlightsDataSource extends DataSource<Flight> {
       this.filterString = res;
     });
   }
-
-  /**
-   * Paginate the data (client-side). If you're using server-side pagination,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
-  private getPagedData(data: Flight[]) {
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    return data.splice(startIndex, this.paginator.pageSize);
-  }
-
-  /**
-   * Sort the data (client-side). If you're using server-side sorting,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
-  private getSortedData(data: Flight[]) {
-    if (!this.sort.active || this.sort.direction === '') {
-      return data;
-    }
-
-    return data.sort((a, b) => {
-      const isAsc = this.sort.direction === 'asc';
-      switch (this.sort.active) {
-        case 'flightId': return compare(a.flightId, b.flightId, isAsc);
-        case 'price': return compare(+a.price, +b.price, isAsc);
-        case 'departureTime': return compare(+a.departureTime.getTime(), +b.departureTime.getTime(), isAsc);
-        case 'departureLocation': return compare(a.departureLocation.name, b.departureLocation.name, isAsc);
-        case 'availableSeats': return compare(+a.availableSeats, +b.availableSeats, isAsc);
-        case 'arrivalTime': return compare(+a.arrivalTime.getTime(), +b.arrivalTime.getTime(), isAsc);
-        case 'arrivalLocation': return compare(a.arrivalLocation.name, b.arrivalLocation.name, isAsc);
-        case 'airline': return compare(+a.airline.name, +b.airline.name, isAsc);
-        default: return 0;
-      }
-    });
-  }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

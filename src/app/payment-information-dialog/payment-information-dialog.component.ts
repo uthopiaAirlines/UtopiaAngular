@@ -51,7 +51,6 @@ export class PaymentInformationDialogComponent implements OnInit {
         if (!res.hasOwnProperty('error')) {
           let confirmation = res;
           this.data.booking.paymentId = confirmation.paymentIntent.id;
-          console.log(this.data.booking);
           this.flightService.createBooking(this.data.booking).subscribe(() => {
             this.dialog.closeAll();
             this.closeOverlay();

@@ -26,7 +26,6 @@ export class BookingDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.booking.numberOfTickets);
     if (this.oauthService.hasValidAccessToken()) {
       this.userRole = this.oauthService.getIdentityClaims()["cognito:groups"][0];
       this.user = this.oauthService.getIdentityClaims();
