@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { Booking } from '../domain/booking'
 import { NgModel } from '@angular/forms';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -22,8 +23,9 @@ export class BookingDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<BookingDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public booking: Booking,
     public oauthService: OAuthService,
-    private bookingServ: BookingService
-  ) {}
+    private bookingServ: BookingService,
+    public dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     if (this.oauthService.hasValidAccessToken()) {
@@ -37,9 +39,7 @@ export class BookingDialogComponent implements OnInit {
           this.booking.patron = this.user.sub;
           break;
         case "Counter":
-
-          break;
-        default:
+          this.getUsersForCounter();
           break;
       }
     }
@@ -61,7 +61,20 @@ export class BookingDialogComponent implements OnInit {
   getClientsOfAgent(agentId: string) {
     this.bookingServ.getClientByAgent(agentId).subscribe(res => {
       this.clients = res;
-    })
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      })
+  }
+
+  getUsersForCounter() {
+    this.bookingServ.getUserCounter().subscribe(res => {
+      this.clients = res
+    },
+      err => {
+        this.dialog.open(ErrorDialogComponent);
+      }
+    )
   }
 
 }
