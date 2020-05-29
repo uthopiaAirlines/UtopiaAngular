@@ -24,7 +24,7 @@ export class FlightsDataSource extends DataSource<Flight> {
 
   constructor(private flightService: FlightService) {
     super();
-    this.data = flightService.getPagedFlights(10, 0, 'flightId', false, this.filterString);
+    this.data = flightService.getPagedFlights(10, 0, 'flightId', true, this.filterString);
     this.filterSubject = new Subject<string>();
     this.filterObservable = this.filterSubject.asObservable();
     this.filterObservable.subscribe(res => {
@@ -32,7 +32,7 @@ export class FlightsDataSource extends DataSource<Flight> {
     });
     this.data.subscribe(res => {
       this.dataArray = res.data;
-      this.dataLength = res.totalFlights;
+      this.dataLength = res.totalFiltered;
     }, error => { console.log(error) })
   }
 
@@ -57,10 +57,10 @@ export class FlightsDataSource extends DataSource<Flight> {
         this.paginator.pageSize,
         this.paginator.pageIndex,
         ((this.sort.active === undefined) ? 'flightId' : this.sort.active),
-        ((this.sort.direction === 'asc') ? true : false),
+        ((this.sort.direction === 'desc') ? false : true),
         this.filterString).toPromise().then(res => {
           this.dataArray = res.data;
-          this.dataLength = res.totalFlights;
+          this.dataLength = res.totalFiltered;
           return res.data;
         });
     }))
