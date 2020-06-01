@@ -3,7 +3,8 @@ import { TestBed } from '@angular/core/testing';
 import { FlightService } from './flight.service';
 import { asyncData } from 'src/test/asyncData';
 import { Flight } from '../../domain/flight';
-import { Airport } from '../../domain/airport';
+import { intentResponse } from '../../domain/intentResponse';
+import { Booking } from 'src/app/domain/booking';
 
 describe('FlightService', () => {
   let service: FlightService;
@@ -143,5 +144,38 @@ describe('FlightService', () => {
       fail
     );
     expect(httpClientSpy.get.calls.count()).toBe(1, 'one call');
+  });
+
+  it('should create a paymentIntent, returning paymentIntent', () => {
+    const expectedIntentResponse: intentResponse = {
+      client_secret: '1223345',
+      id: '0098776'
+    }
+    oauthServiceSpy.authorizationHeader.and.returnValue('');
+    httpClientSpy.post.and.returnValue(asyncData(expectedIntentResponse));
+    service.createPaymentIntent(10).subscribe(res => {
+      expect(res).toBe(expectedIntentResponse, 'expected intentResponse');
+    });
+    expect(httpClientSpy.post.calls.count()).toBe(1, 'one call');
+  });
+
+  it('should create a booking, returning success', () => {
+    let booking: Booking = {
+      bookingId: 0,
+      patron: '1234',
+      flight: 1234,
+      ticketPrice: 15.00,
+      numberOfTickets: 5,
+      bookingAgent: '357951',
+      paymentId: '951357'
+    }
+    oauthServiceSpy.authorizationHeader.and.returnValue('');
+    oauthServiceSpy.getIdentityClaims.and.returnValue({sub: '357951', "cognito:groups": ['Counter']})
+    httpClientSpy.post.and.returnValue(asyncData(booking));
+    booking.bookingAgent = '';
+    service.createBooking(booking).subscribe(res => {
+      expect(res.bookingAgent).toBe('357951', 'expected returned booking agent sub');
+    })
+    expect(httpClientSpy.post.calls.count()).toBe(1, 'one call');
   });
 });
