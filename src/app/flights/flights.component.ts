@@ -45,7 +45,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.stripe = Stripe('pk_test_X0Qd8APxhX2bwh3MvKMEEpgV00h4pRawT3');
 
-    this.dataSource = new FlightsDataSource(this.flightService);
+    this.dataSource = new FlightsDataSource(this.flightService, this.dialog);
     if (this.oauthService.hasValidAccessToken()) {
       this.isLoggedIn = true;
       this.userRole = this.oauthService.getIdentityClaims()["cognito:groups"][0];
@@ -74,7 +74,7 @@ export class FlightsComponent implements AfterViewInit, OnInit {
       return;
     }
     this.isLoggedIn = true;
-    let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0, numberOfTickets: row.availableSeats}
+    let booking: Booking = { flight: row.flightId, ticketPrice: row.price, bookingId: 0, numberOfTickets: row.availableSeats }
     const dialogRef = this.dialog.open(BookingDialogComponent, {
       data: { ...booking }
     });
