@@ -1,29 +1,24 @@
 <div mat-dialog-content>
     <mat-form-field appearance="outline">
         <mat-label>Flight</mat-label>
-        <input matInput [(ngModel)]="booking.flight" readonly="true">
+        <input matInput [ngModel]="booking.flight" readonly="true">
     </mat-form-field>
-    <!-- <mat-form-field *ngIf="this.userRole == 'Counter'" appearance="outline">
-        <mat-label>Patron</mat-label>
-        <input matInput [(ngModel)]="booking.patron" #patron='ngModel' required>
-    </mat-form-field> -->
     <mat-form-field *ngIf="userRole == 'Agent'||this.userRole == 'Counter'">
         <mat-label *ngIf="userRole == 'Agent'">Select a Client</mat-label>
         <mat-label *ngIf="userRole == 'Counter'">Select a User</mat-label>
-        <mat-select [(ngModel)]="booking.patron" #patron='ngModel' required>
+        <mat-select name="patronId" [(ngModel)]="booking.patron" required>
             <mat-option *ngFor="let client of clients;" [value]="client.sub">{{client.username}}</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Ticket Price</mat-label>
-        <input matInput [(ngModel)]="booking.ticketPrice" type="number" readonly="true">
+        <input matInput [ngModel]="booking.ticketPrice" type="number" readonly="true">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Number Of Tickets</mat-label>
         <input matInput [(ngModel)]="booking.numberOfTickets" #numberOfTickets='ngModel' type="number" min="1"
             [max]="maxTickets" oninput="validity.valid||(value='');" required>
     </mat-form-field>
-    <div [(ngModel)]="booking.patron" #patron='ngModel' name="customerPatronHolder" ngDefaultControl></div>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
