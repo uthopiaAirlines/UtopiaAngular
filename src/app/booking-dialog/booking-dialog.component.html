@@ -20,6 +20,7 @@
             [max]="maxTickets" oninput="validity.valid||(value='');" required>
     </mat-form-field>
 </div>
+<div [(ngModel)]="booking.patron" #patron='ngModel' name="customerPatronHolder" ngDefaultControl></div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button *ngIf='isValid(patron, numberOfTickets)' [mat-dialog-close]="booking">Submit</button>
