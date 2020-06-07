@@ -6,7 +6,7 @@
     <mat-form-field *ngIf="userRole == 'Agent'||this.userRole == 'Counter'">
         <mat-label *ngIf="userRole == 'Agent'">Select a Client</mat-label>
         <mat-label *ngIf="userRole == 'Counter'">Select a User</mat-label>
-        <mat-select name="patron" [(ngModel)]="booking.patron" #patron='ngModel' required>
+        <mat-select name="patron" [(ngModel)]="booking.patron" ngDefaultControl required>
             <mat-option *ngFor="let client of clients;" [value]="client.sub">{{client.username}}</mat-option>
         </mat-select>
     </mat-form-field>
@@ -20,7 +20,6 @@
             [max]="maxTickets" oninput="validity.valid||(value='');" required>
     </mat-form-field>
 </div>
-<div [(ngModel)]="booking.patron" #patron='ngModel' name="customerPatronHolder" ngDefaultControl></div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancel</button>
     <button mat-button *ngIf='isValid(patron, numberOfTickets)' [mat-dialog-close]="booking">Submit</button>
