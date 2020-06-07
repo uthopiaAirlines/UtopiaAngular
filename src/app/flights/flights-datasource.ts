@@ -7,6 +7,9 @@ import { Flight } from '../domain/flight';
 import { FlightService } from '../service/flight/flight.service'
 import { PagedData } from '../domain/pagedData';
 
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+
 /**
  * Data source for the Flights view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
@@ -22,18 +25,21 @@ export class FlightsDataSource extends DataSource<Flight> {
   filterObservable: Observable<string>;
   filterString: string = "";
 
-  constructor(private flightService: FlightService) {
+  constructor(private flightService: FlightService, private dialog: MatDialog) {
     super();
     this.data = flightService.getPagedFlights(10, 0, 'flightId', true, this.filterString);
     this.filterSubject = new Subject<string>();
     this.filterObservable = this.filterSubject.asObservable();
     this.filterObservable.subscribe(res => {
       this.filterString = res;
+      this.paginator.firstPage();
     });
     this.data.subscribe(res => {
       this.dataArray = res.data;
       this.dataLength = res.totalFiltered;
-    }, error => { console.log(error) })
+    }, error => {
+      this.dialog.open(ErrorDialogComponent);
+    })
   }
 
   /**
@@ -71,6 +77,7 @@ export class FlightsDataSource extends DataSource<Flight> {
     this.filterSubject.next(filterValue);
     this.filterObservable.subscribe(res => {
       this.filterString = res;
+      this.paginator.firstPage();
     });
   }
 }

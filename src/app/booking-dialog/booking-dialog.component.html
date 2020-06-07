@@ -8,7 +8,8 @@
         <input matInput [(ngModel)]="booking.patron" #patron='ngModel' required>
     </mat-form-field> -->
     <mat-form-field *ngIf="userRole == 'Agent'||this.userRole == 'Counter'">
-        <mat-label>Select a Client</mat-label>
+        <mat-label *ngIf="userRole == 'Agent'">Select a Client</mat-label>
+        <mat-label *ngIf="userRole == 'Counter'">Select a User</mat-label>
         <mat-select [(ngModel)]="booking.patron" #patron='ngModel' required>
             <mat-option *ngFor="let client of clients;" [value]="client.sub">{{client.username}}</mat-option>
         </mat-select>

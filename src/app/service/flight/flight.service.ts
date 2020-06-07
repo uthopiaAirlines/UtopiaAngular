@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHandler, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Flight } from '../../domain/flight'
 import { environment } from '../../../environments/environment'
 import { Booking } from 'src/app/domain/booking';
